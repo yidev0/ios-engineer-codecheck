@@ -22,7 +22,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var issuesLabel: UILabel!
     
     var repoView: RepositoriesViewController!
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
