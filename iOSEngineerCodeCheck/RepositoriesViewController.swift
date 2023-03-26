@@ -12,11 +12,9 @@ class RepositoriesViewController: UITableViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var repositories: [[String: Any]] = []
+    var repositories: [Repository] = []
     
     var urlTask: URLSessionTask?
-    var searchText: String!
-    var url: String!
     var selectedRow: Int!
     
     override func viewDidLoad() {
@@ -46,8 +44,8 @@ class RepositoriesViewController: UITableViewController {
         
         let cell = UITableViewCell()
         let repo = repositories[indexPath.row]
-        cell.textLabel?.text = repo["full_name"] as? String ?? ""
-        cell.detailTextLabel?.text = repo["language"] as? String ?? ""
+        cell.textLabel?.text = repo.full_name
+        cell.detailTextLabel?.text = repo.language
         cell.tag = indexPath.row
         return cell
         
@@ -62,7 +60,6 @@ class RepositoriesViewController: UITableViewController {
     }
     
 }
-
 
 extension RepositoriesViewController: UISearchBarDelegate {
     

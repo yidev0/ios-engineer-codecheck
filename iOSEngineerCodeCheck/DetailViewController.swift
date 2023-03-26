@@ -28,31 +28,27 @@ class DetailViewController: UIViewController {
         
         let repo = repoView.repositories[repoView.selectedRow]
         
-        languageLabel.text = "Written in \(repo["language"] as? String ?? "")"
-        starLabel.text = "\(repo["stargazers_count"] as? Int ?? 0) stars"
-        watcherLabel.text = "\(repo["wachers_count"] as? Int ?? 0) watchers"
-        forksLabel.text = "\(repo["forks_count"] as? Int ?? 0) forks"
-        issuesLabel.text = "\(repo["open_issues_count"] as? Int ?? 0) open issues"
+        languageLabel.text = repo.language ?? ""
+        starLabel.text = String(repo.stargazers_count)
+        watcherLabel.text = String(repo.watchers)
+        forksLabel.text = String(repo.forks_count)
+        issuesLabel.text = String(repo.open_issues)
         getImage()
         
     }
     
-    func getImage(){
+    func getImage() {
         
         let repo = repoView.repositories[repoView.selectedRow]
         
-        titleLabel.text = repo["full_name"] as? String
+        titleLabel.text = repo.full_name
         
-        if let owner = repo["owner"] as? [String: Any] {
-            if let imgURL = owner["avatar_url"] as? String {
-                URLSession.shared.dataTask(with: URL(string: imgURL)!) { (data, res, err) in
-                    let img = UIImage(data: data!)!
-                    DispatchQueue.main.async {
-                        self.imageView.image = img
-                    }
-                }.resume()
+        URLSession.shared.dataTask(with: URL(string: repo.owner.avatar_url)!) { (data, res, err) in
+            let img = UIImage(data: data!)!
+            DispatchQueue.main.async {
+                self.imageView.image = img
             }
-        }
+        }.resume()
         
     }
     
