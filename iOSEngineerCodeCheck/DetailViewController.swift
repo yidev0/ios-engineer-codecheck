@@ -21,25 +21,25 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var forksLabel: UILabel!
     @IBOutlet weak var issuesLabel: UILabel!
     
-    var repoView: RepositoriesViewController!
+    var repository: Repository!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let repo = repoView.repositories[repoView.selectedRow]
+        updateUI(for: repository)
+        getImage(for: repository)
         
+    }
+    
+    func updateUI(for repo: Repository) {
         languageLabel.text = repo.language ?? ""
         starLabel.text = String(repo.stargazers_count)
         watcherLabel.text = String(repo.watchers)
         forksLabel.text = String(repo.forks_count)
         issuesLabel.text = String(repo.open_issues)
-        getImage()
-        
     }
     
-    func getImage() {
-        
-        let repo = repoView.repositories[repoView.selectedRow]
+    func getImage(for repo: Repository) {
         
         titleLabel.text = repo.full_name
         
