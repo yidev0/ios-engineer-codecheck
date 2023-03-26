@@ -15,7 +15,7 @@ class RepositoriesViewController: UITableViewController {
     var repositories: [Repository] = []
     
     var urlTask: URLSessionTask?
-    var selectedRow: Int!
+    var selectedRow: Int? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,9 +27,10 @@ class RepositoriesViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if segue.identifier == "Detail"{
+        if segue.identifier == "Detail",
+           let selectedRow = selectedRow {
             let detailView = segue.destination as! DetailViewController
-            detailView.repoView = self
+            detailView.repository = repositories[selectedRow]
         }
         
     }
@@ -42,8 +43,8 @@ class RepositoriesViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell()
-        let repo = repositories[indexPath.row]
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
+        let repo: Repository = repositories[indexPath.row]
         cell.textLabel?.text = repo.full_name
         cell.detailTextLabel?.text = repo.language
         cell.tag = indexPath.row
@@ -75,25 +76,34 @@ extension RepositoriesViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 
-        let searchText: String = searchBar.text!
+        let searchText: String = searchBar.text ?? ""
         searchRepository(for: searchText)
         
     }
     
     func searchRepository(for text: String) {
         
-        if text.count != 0 {
-            let url = "https://api.github.com/search/repositories?q=\(text)"
-            urlTask = URLSession.shared.dataTask(with: URL(string: url)!) { (data, res, err) in
-                let result = try! JSONDecoder().decode(Repositories.self, from: data!)
-                self.repositories = result.items
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
+        if text.count != 0 { return }
+        let apiURL = "https://api.github.com/search/repositories?q=\(text)"
+        guard let url = URL(string: apiURL) else { return }
+        urlTask = URLSession.shared.dataTask(with: url) { (data, res, err) in
+            if let data = data {
+                do {
+                    let result = try JSONDecoder().decode(Repositories.self, from: data)
+                    self.repositories = result.items
+                } catch {
+                    print(error.localizedDescription)
                 }
+            } else {
+                self.repositories = []
             }
             
-            urlTask?.resume()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
+        
+        urlTask?.resume()
         
     }
     
