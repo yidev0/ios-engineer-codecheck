@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RepositoriesViewController: UITableViewController, UISearchBarDelegate {
+class RepositoriesViewController: UITableViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -24,38 +24,6 @@ class RepositoriesViewController: UITableViewController, UISearchBarDelegate {
         
         searchBar.text = "GitHubのリポジトリを検索できるよー"
         searchBar.delegate = self
-        
-    }
-    
-    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        // searchBarの初期化
-        searchBar.text = ""
-        return true
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        urlTask?.cancel()
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-        searchText = searchBar.text!
-        
-        if searchText.count != 0 {
-            url = "https://api.github.com/search/repositories?q=\(searchText!)"
-            urlTask = URLSession.shared.dataTask(with: URL(string: url)!) { (data, res, err) in
-                if let obj = try! JSONSerialization.jsonObject(with: data!) as? [String: Any] {
-                    if let items = obj["items"] as? [[String: Any]] {
-                        self.repositories = items
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                        }
-                    }
-                }
-            }
-            // リストの更新
-            urlTask?.resume()
-        }
         
     }
     
@@ -90,6 +58,45 @@ class RepositoriesViewController: UITableViewController, UISearchBarDelegate {
         selectedRow = indexPath.row
         // 画面遷移時に呼ばれる
         performSegue(withIdentifier: "Detail", sender: self)
+        
+    }
+    
+}
+
+
+extension RepositoriesViewController: UISearchBarDelegate {
+    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        // searchBarの初期化
+        searchBar.text = ""
+        return true
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        urlTask?.cancel()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+
+        let searchText: String = searchBar.text!
+        searchRepository(for: searchText)
+        
+    }
+    
+    func searchRepository(for text: String) {
+        
+        if text.count != 0 {
+            let url = "https://api.github.com/search/repositories?q=\(text)"
+            urlTask = URLSession.shared.dataTask(with: URL(string: url)!) { (data, res, err) in
+                let result = try! JSONDecoder().decode(Repositories.self, from: data!)
+                self.repositories = result.items
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+            
+            urlTask?.resume()
+        }
         
     }
     
