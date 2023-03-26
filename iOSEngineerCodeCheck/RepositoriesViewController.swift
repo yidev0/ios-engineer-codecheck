@@ -10,12 +10,12 @@ import UIKit
 
 class RepositoriesViewController: UITableViewController {
     
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak private var searchBar: UISearchBar!
     
-    var repositories: [Repository] = []
+    private var repositories: [Repository] = []
     
-    var urlTask: URLSessionTask?
-    var selectedRow: Int? = nil
+    private var urlTask: URLSessionTask?
+    private var selectedRow: Int? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,9 +90,12 @@ extension RepositoriesViewController: UISearchBarDelegate {
             if let data = data {
                 do {
                     let result = try JSONDecoder().decode(Repositories.self, from: data)
-                    self.repositories = result.items
+                    autoreleasepool {
+                        self.repositories = result.items
+                    }
                 } catch {
                     print(error.localizedDescription)
+                    self.repositories = []
                 }
             } else {
                 self.repositories = []

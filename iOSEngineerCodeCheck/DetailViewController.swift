@@ -10,16 +10,16 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak private var imageView: UIImageView!
     
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak private var titleLabel: UILabel!
     
-    @IBOutlet weak var languageLabel: UILabel!
+    @IBOutlet weak private var languageLabel: UILabel!
     
-    @IBOutlet weak var starLabel: UILabel!
-    @IBOutlet weak var watcherLabel: UILabel!
-    @IBOutlet weak var forksLabel: UILabel!
-    @IBOutlet weak var issuesLabel: UILabel!
+    @IBOutlet weak private var starLabel: UILabel!
+    @IBOutlet weak private var watcherLabel: UILabel!
+    @IBOutlet weak private var forksLabel: UILabel!
+    @IBOutlet weak private var issuesLabel: UILabel!
     
     var repository: Repository!
     
