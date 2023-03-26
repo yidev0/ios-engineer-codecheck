@@ -83,7 +83,7 @@ extension RepositoriesViewController: UISearchBarDelegate {
     
     func searchRepository(for text: String) {
         
-        if text.count != 0 { return }
+        if text.count == 0 { return }
         let apiURL = "https://api.github.com/search/repositories?q=\(text)"
         guard let url = URL(string: apiURL) else { return }
         urlTask = URLSession.shared.dataTask(with: url) { (data, res, err) in
