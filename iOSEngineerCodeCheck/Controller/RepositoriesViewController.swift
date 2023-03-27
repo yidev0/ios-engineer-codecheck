@@ -14,7 +14,7 @@ class RepositoriesViewController: UITableViewController {
     
     private var repositories: [Repository] = []
     
-    private var urlTask: URLSessionTask?
+    private var gitHubFetcher = GitHubFetcher.shared
     private var selectedRow: Int? = nil
     
     private var searchText: String = ""
@@ -73,7 +73,9 @@ extension RepositoriesViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        urlTask?.cancel()
+        
+        gitHubFetcher.urlTask?.cancel()
+        
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -86,30 +88,12 @@ extension RepositoriesViewController: UISearchBarDelegate {
     
     func searchRepository(for text: String) {
         
-        if text.count == 0 { return }
-        let apiURL = "https://api.github.com/search/repositories?q=\(text)"
-        guard let url = URL(string: apiURL) else { return }
-        urlTask = URLSession.shared.dataTask(with: url) { (data, res, err) in
-            if let data = data {
-                do {
-                    let result = try JSONDecoder().decode(Repositories.self, from: data)
-                    autoreleasepool {
-                        self.repositories = result.items
-                    }
-                } catch {
-                    print(error.localizedDescription)
-                    self.repositories = []
-                }
-            } else {
-                self.repositories = []
-            }
-            
+        gitHubFetcher.fetch(text) { repos, error in
+            self.repositories = repos
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
-        
-        urlTask?.resume()
         
     }
     

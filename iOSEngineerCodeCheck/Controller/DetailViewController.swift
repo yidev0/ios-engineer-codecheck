@@ -43,12 +43,13 @@ class DetailViewController: UIViewController {
         
         titleLabel.text = repo.full_name
         
-        URLSession.shared.dataTask(with: URL(string: repo.owner.avatar_url)!) { (data, res, err) in
-            let img = UIImage(data: data!)!
-            DispatchQueue.main.async {
-                self.imageView.image = img
+        repo.owner.fetchAvatar { image, error in
+            if let image: UIImage = image {
+                DispatchQueue.main.async {
+                    self.imageView.image = image
+                }
             }
-        }.resume()
+        }
         
     }
     
