@@ -17,6 +17,8 @@ class RepositoriesViewController: UITableViewController {
     private var urlTask: URLSessionTask?
     private var selectedRow: Int? = nil
     
+    private var searchText: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -66,7 +68,7 @@ extension RepositoriesViewController: UISearchBarDelegate {
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         // searchBarの初期化
-        searchBar.text = ""
+        searchBar.text = searchText
         return true
     }
     
@@ -76,8 +78,9 @@ extension RepositoriesViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 
-        let searchText: String = searchBar.text ?? ""
+        searchText = searchBar.text ?? ""
         searchRepository(for: searchText)
+        searchBar.endEditing(true)
         
     }
     
