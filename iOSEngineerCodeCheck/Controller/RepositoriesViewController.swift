@@ -22,7 +22,8 @@ class RepositoriesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchBar.text = "GitHubのリポジトリを検索できるよー"
+        searchBar.placeholder = "GitHubのリポジトリを検索できるよー"
+        searchBar.text = searchText
         searchBar.delegate = self
         
     }
@@ -45,11 +46,9 @@ class RepositoriesViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         let repo: Repository = repositories[indexPath.row]
-        cell.textLabel?.text = repo.full_name
-        cell.detailTextLabel?.text = repo.language
-        cell.tag = indexPath.row
+        let cell = UITableViewCell()
+        cell.contentConfiguration = cell.repositoryContentConfiguration(repository: repo)
         return cell
         
     }
