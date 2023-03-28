@@ -12,8 +12,8 @@ import UIKit.UIImage
 struct Repository: Decodable {
     ///Repositoryの名前
     let name: String
-    ///Ownerのloginを含めたRepositoryの名前
-    let full_name: String
+    ///Repositoryの詳細
+    let description: String?
     ///利用されている言語
     let language: String?
     ///starの数
@@ -33,6 +33,14 @@ struct Repository: Decodable {
         let login: String
         let avatar_url: String
     }
+}
+
+extension Repository {
+    
+    public var fullName: String {
+        return self.owner.login + "/" + self.name
+    }
+    
 }
 
 extension Repository.Owner {
@@ -56,5 +64,7 @@ extension Repository.Owner {
         .resume()
         
     }
+    
+    
  
 }

@@ -37,11 +37,10 @@ class DetailViewController: UIViewController {
         watcherLabel.text = String(repo.watchers)
         forksLabel.text = String(repo.forks_count)
         issuesLabel.text = String(repo.open_issues)
+        titleLabel.text = repo.fullName
     }
     
     func getImage(for repo: Repository) {
-        
-        titleLabel.text = repo.full_name
         
         repo.owner.fetchAvatar { image, error in
             if let image: UIImage = image {

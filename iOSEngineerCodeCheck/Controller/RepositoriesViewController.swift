@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class RepositoriesViewController: UITableViewController {
     
@@ -26,6 +27,15 @@ class RepositoriesViewController: UITableViewController {
         searchBar.text = searchText
         searchBar.delegate = self
         
+    }
+    
+    override func performSegue(withIdentifier identifier: String, sender: Any?) {
+        if identifier == "Detail",
+           let selectedRow: Int = self.selectedRow {
+            let repository = self.repositories[selectedRow]
+            let destination = UIHostingController(rootView: DetailView(repository: repository))
+            self.navigationController?.pushViewController(destination, animated: true)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
