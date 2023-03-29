@@ -10,12 +10,14 @@ import UIKit
 
 class RepositoriesViewController: UITableViewController {
     
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak private var searchBar: UISearchBar!
     
-    var repositories: [Repository] = []
+    private var repositories: [Repository] = []
     
-    var urlTask: URLSessionTask?
-    var selectedRow: Int? = nil
+    private var urlTask: URLSessionTask?
+    private var selectedRow: Int? = nil
+    
+    private var searchText: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +68,7 @@ extension RepositoriesViewController: UISearchBarDelegate {
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         // searchBarの初期化
-        searchBar.text = ""
+        searchBar.text = searchText
         return true
     }
     
@@ -76,23 +78,27 @@ extension RepositoriesViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 
-        let searchText: String = searchBar.text ?? ""
+        searchText = searchBar.text ?? ""
         searchRepository(for: searchText)
+        searchBar.endEditing(true)
         
     }
     
     func searchRepository(for text: String) {
         
-        if text.count != 0 { return }
+        if text.count == 0 { return }
         let apiURL = "https://api.github.com/search/repositories?q=\(text)"
         guard let url = URL(string: apiURL) else { return }
         urlTask = URLSession.shared.dataTask(with: url) { (data, res, err) in
             if let data = data {
                 do {
                     let result = try JSONDecoder().decode(Repositories.self, from: data)
-                    self.repositories = result.items
+                    autoreleasepool {
+                        self.repositories = result.items
+                    }
                 } catch {
                     print(error.localizedDescription)
+                    self.repositories = []
                 }
             } else {
                 self.repositories = []
