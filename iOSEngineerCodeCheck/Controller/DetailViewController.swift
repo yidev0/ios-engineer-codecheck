@@ -34,7 +34,7 @@ class DetailViewController: UIViewController {
     func updateUI(for repo: Repository) {
         languageLabel.text = repo.language ?? ""
         starLabel.text = String(repo.stargazers_count)
-        watcherLabel.text = String(repo.watchers)
+        watcherLabel.text = String(repo.watchers_count)
         forksLabel.text = String(repo.forks_count)
         issuesLabel.text = String(repo.open_issues)
         titleLabel.text = repo.fullName

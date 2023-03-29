@@ -19,7 +19,7 @@ struct RepositoryDetailList: View {
             repository.stargazers_count,
             repository.forks_count,
             repository.open_issues,
-            repository.watchers,
+            repository.watchers_count,
         ]
     }
     
@@ -42,7 +42,7 @@ struct RepositoryDetailList_Previews: PreviewProvider {
                 description: "description",
                 language: "Swift",
                 stargazers_count: 1,
-                watchers: 12,
+                watchers_count: 12,
                 forks_count: 123,
                 open_issues: 0,
                 owner: Repository.Owner(

@@ -19,7 +19,7 @@ struct Repository: Decodable {
     ///starの数
     let stargazers_count: Int
     ///watchされている数
-    let watchers: Int
+    let watchers_count: Int
     ///フォークされている数
     let forks_count: Int
     ///開かれているissueの数
