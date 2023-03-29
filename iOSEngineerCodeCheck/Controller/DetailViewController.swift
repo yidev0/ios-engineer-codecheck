@@ -42,7 +42,7 @@ class DetailViewController: UIViewController {
     
     func getImage(for repo: Repository) {
         
-        repo.owner.fetchAvatar { image, error in
+        GitHubFetcher.shared.fetchAvatar(from: repo.owner.avatar_url) { image, error in
             if let image: UIImage = image {
                 DispatchQueue.main.async {
                     self.imageView.image = image
