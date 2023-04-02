@@ -33,6 +33,7 @@ struct DetailView: View {
             }
             .padding()
         }
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             getImage(for: repository)
         }

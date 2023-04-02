@@ -1,0 +1,15 @@
+
+/* Class = "UILabel"; text = "Stars"; ObjectID = "0WZ-UA-R8O"; */
+"0WZ-UA-R8O.text" = "Stars";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "4q1-pG-WSB"; */
+"4q1-pG-WSB.text" = "Title";
+
+/* Class = "UILabel"; text = "Detail"; ObjectID = "E7E-kF-FF6"; */
+"E7E-kF-FF6.text" = "Detail";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "V66-xN-aKy"; */
+"V66-xN-aKy.text" = "Title";
+
+/* Class = "UINavigationItem"; title = "Root View Controller"; ObjectID = "ktq-eC-ZBq"; */
+"ktq-eC-ZBq.title" = "Root View Controller";

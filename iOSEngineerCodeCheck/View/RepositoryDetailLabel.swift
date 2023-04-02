@@ -11,10 +11,14 @@ import SwiftUI
 struct RepositoryDetailLabel: View {
     
     var image: Image
-    var title: String
+    var title: LocalizedStringKey
     var detail: String
     
-    init(systemImage: String, title: String, detail: String) {
+    init(
+        systemImage: String,
+        title: LocalizedStringKey,
+        detail: String
+    ) {
         self.image = Image(systemName: systemImage)
         self.title = title
         self.detail = detail
@@ -37,7 +41,11 @@ struct RepositoryDetailLabel: View {
 
 extension RepositoryDetailLabel {
     
-    init(imageName: String, title: String, detail: String) {
+    init(
+        imageName: String,
+        title: LocalizedStringKey,
+        detail: String
+    ) {
         self.image = Image(imageName)
         self.title = title
         self.detail = detail

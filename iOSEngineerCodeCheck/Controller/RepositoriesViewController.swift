@@ -23,7 +23,10 @@ class RepositoriesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchBar.placeholder = "GitHubのリポジトリを検索できるよー"
+        self.navigationItem.title = "Repositories".localized
+        self.navigationController?.setupLargeTitle()
+        
+        searchBar.placeholder = "Name of Repository".localized
         searchBar.text = searchText
         searchBar.delegate = self
         

@@ -11,7 +11,7 @@ import SwiftUI
 struct RepositoryDetailList: View {
     
     let symbols = ["chevron.left.forwardslash.chevron.right", "star", "tuningfork", "smallcircle.filled.circle", "eye"]
-    let titles = ["Language", "Star", "Forks", "Issues", "Watchers"]
+    let titles:[LocalizedStringKey] = ["Language", "Star", "Forks", "Issues", "Watchers"]
     var details: [String]
     
     init(repository: Repository) {
