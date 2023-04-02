@@ -22,9 +22,11 @@ struct DetailView: View {
                     .foregroundColor(.primary)
                     .font(.title)
                     .fontWeight(.bold)
+                    .accessibilityValue("Title")
                 Text(repository.description ?? "")
                     .foregroundColor(.primary)
                     .font(.body)
+                    .accessibilityValue("Description")
             }
             .padding()
             

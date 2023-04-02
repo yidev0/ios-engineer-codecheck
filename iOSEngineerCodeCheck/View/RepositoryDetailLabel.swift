@@ -30,12 +30,15 @@ struct RepositoryDetailLabel: View {
                 image
             }
             .frame(minWidth: UIFont.preferredFont(forTextStyle: .body).pointSize + 16)
+            .accessibilityHidden(true)
+            
             Text(title)
                 .foregroundColor(.primary)
             Spacer()
             Text(detail)
                 .foregroundColor(.secondary)
         }
+        .accessibilityElement(children: .combine)
     }
 }
 
