@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class RepositoriesViewController: UITableViewController {
     
@@ -14,7 +15,7 @@ class RepositoriesViewController: UITableViewController {
     
     private var repositories: [Repository] = []
     
-    private var urlTask: URLSessionTask?
+    private var gitHubFetcher = GitHubFetcher.shared
     private var selectedRow: Int? = nil
     
     private var searchText: String = ""
@@ -22,9 +23,19 @@ class RepositoriesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchBar.text = "GitHubのリポジトリを検索できるよー"
+        searchBar.placeholder = "GitHubのリポジトリを検索できるよー"
+        searchBar.text = searchText
         searchBar.delegate = self
         
+    }
+    
+    override func performSegue(withIdentifier identifier: String, sender: Any?) {
+        if identifier == "Detail",
+           let selectedRow: Int = self.selectedRow {
+            let repository = self.repositories[selectedRow]
+            let destination = UIHostingController(rootView: DetailView(repository: repository))
+            self.navigationController?.pushViewController(destination, animated: true)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -45,11 +56,9 @@ class RepositoriesViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         let repo: Repository = repositories[indexPath.row]
-        cell.textLabel?.text = repo.full_name
-        cell.detailTextLabel?.text = repo.language
-        cell.tag = indexPath.row
+        let cell = UITableViewCell()
+        cell.contentConfiguration = cell.repositoryContentConfiguration(repository: repo)
         return cell
         
     }
@@ -73,7 +82,9 @@ extension RepositoriesViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        urlTask?.cancel()
+        
+        gitHubFetcher.urlTask?.cancel()
+        
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -86,30 +97,12 @@ extension RepositoriesViewController: UISearchBarDelegate {
     
     func searchRepository(for text: String) {
         
-        if text.count == 0 { return }
-        let apiURL = "https://api.github.com/search/repositories?q=\(text)"
-        guard let url = URL(string: apiURL) else { return }
-        urlTask = URLSession.shared.dataTask(with: url) { (data, res, err) in
-            if let data = data {
-                do {
-                    let result = try JSONDecoder().decode(Repositories.self, from: data)
-                    autoreleasepool {
-                        self.repositories = result.items
-                    }
-                } catch {
-                    print(error.localizedDescription)
-                    self.repositories = []
-                }
-            } else {
-                self.repositories = []
-            }
-            
+        gitHubFetcher.fetch(text) { repos, error in
+            self.repositories = repos
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
-        
-        urlTask?.resume()
         
     }
     

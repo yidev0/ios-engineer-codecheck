@@ -34,21 +34,21 @@ class DetailViewController: UIViewController {
     func updateUI(for repo: Repository) {
         languageLabel.text = repo.language ?? ""
         starLabel.text = String(repo.stargazers_count)
-        watcherLabel.text = String(repo.watchers)
+        watcherLabel.text = String(repo.watchers_count)
         forksLabel.text = String(repo.forks_count)
         issuesLabel.text = String(repo.open_issues)
+        titleLabel.text = repo.fullName
     }
     
     func getImage(for repo: Repository) {
         
-        titleLabel.text = repo.full_name
-        
-        URLSession.shared.dataTask(with: URL(string: repo.owner.avatar_url)!) { (data, res, err) in
-            let img = UIImage(data: data!)!
-            DispatchQueue.main.async {
-                self.imageView.image = img
+        repo.owner.fetchAvatar { image, error in
+            if let image: UIImage = image {
+                DispatchQueue.main.async {
+                    self.imageView.image = image
+                }
             }
-        }.resume()
+        }
         
     }
     
