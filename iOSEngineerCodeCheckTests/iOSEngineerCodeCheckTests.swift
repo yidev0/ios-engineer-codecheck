@@ -34,5 +34,21 @@ class iOSEngineerCodeCheckTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5)
     }
+    
+    func testAvatarFetch() {
+        let fetcher = GitHubFetcher.shared
+        let expectation = expectation(description: "Avatar Fetched")
+        fetcher.fetch("Swift") { repos, error in
+            if let repo = repos.first {
+                fetcher.fetchAvatar(from: repo.owner.avatar_url) { image, error in
+                    if let _ = image {
+                        expectation.fulfill()
+                    }
+                }
+            }
+        }
+        
+        wait(for: [expectation], timeout: 5)
+    }
 
 }
