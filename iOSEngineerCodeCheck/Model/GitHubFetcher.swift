@@ -20,7 +20,8 @@ class GitHubFetcher {
         if text.count == 0 { return }
         
         let apiURL = "https://api.github.com/search/repositories?q=\(text)"
-        guard let url = URL(string: apiURL) else { return }
+        guard let encodedURL = apiURL.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) else { return }
+        guard let url = URL(string: encodedURL) else { return }
         
         urlTask = URLSession.shared.dataTask(with: url) { (data, result, error) in
             if let data = data {
