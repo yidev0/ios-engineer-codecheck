@@ -56,6 +56,22 @@ class RepositoriesViewController: UITableViewController {
         
     }
     
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        let repository = repositories[indexPath.row]
+        let copyURLAction = UIAction(title: "Copy".localized, image: UIImage(systemName: "link")) { _ in
+            let pasteboard = UIPasteboard.general
+            pasteboard.url = repository.url
+        }
+        
+        let menu = UIMenu(children: [copyURLAction])
+        let configuration = UIContextMenuConfiguration(actionProvider:  { _ in
+            menu
+        })
+        return configuration
+        
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         selectedRow = indexPath.row

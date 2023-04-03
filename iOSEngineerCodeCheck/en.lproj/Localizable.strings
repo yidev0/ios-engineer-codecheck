@@ -9,6 +9,7 @@
 // MARK: Repository View
 "Repositories" = "Repositories";
 "Name of Repository" = "Name of Repository";
+"Copy" = "Copy";
 
 // MARK: Detail View
 "Language" = "Language";

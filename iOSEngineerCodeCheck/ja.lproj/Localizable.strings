@@ -9,6 +9,7 @@
 // MARK: Repository View
 "Repositories" = "リポジトリ";
 "Name of Repository" = "リポジトリの名前";
+"Copy" = "コピー";
 
 // MARK: Detail View
 "Language" = "言語";

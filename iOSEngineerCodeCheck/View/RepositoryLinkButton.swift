@@ -13,12 +13,7 @@ struct RepositoryLinkButton: View {
     private var url: URL?
     
     init(repository: Repository) {
-        let urlString = "https://github.com/" + repository.fullName
-        if let url = URL(string: urlString) {
-            self.url = url
-        } else {
-            self.url = nil
-        }
+        self.url = repository.url
     }
     
     var body: some View {

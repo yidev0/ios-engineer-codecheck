@@ -42,4 +42,12 @@ extension Repository {
         return self.owner.login + "/" + self.name
     }
     
+    public var url: URL? {
+        let str = "https://github.com/" + self.fullName
+        if let url = URL(string: str) {
+            return url
+        }
+        return nil
+    }
+    
 }
