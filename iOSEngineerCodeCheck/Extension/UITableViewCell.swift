@@ -19,6 +19,7 @@ extension UITableViewCell {
         content.secondaryTextProperties.color = .secondaryLabel
         
         self.contentConfiguration = content
+        self.accessibilityIdentifier = "Repository Cell"
         return content
     }
     

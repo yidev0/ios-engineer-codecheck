@@ -26,6 +26,9 @@ class RepositoriesViewController: UITableViewController {
         searchBar.placeholder = "GitHubのリポジトリを検索できるよー"
         searchBar.text = searchText
         searchBar.delegate = self
+        searchBar.accessibilityIdentifier = "Repository Search"
+        
+        self.tableView.accessibilityIdentifier = "Repository Table"
         
     }
     
@@ -88,9 +91,13 @@ extension RepositoriesViewController: UISearchBarDelegate {
     func searchRepository(for text: String) {
         
         gitHubFetcher.fetch(text) { repos, error in
-            self.repositories = repos
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                self.repositories = repos
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
             }
         }
         
