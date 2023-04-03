@@ -32,6 +32,8 @@ struct DetailView: View {
             
             VStack(spacing: 16) {
                 RepositoryDetailList(repository: repository)
+                RepositoryLinkButton(repository: repository)
+                    .padding(.top, 32)
             }
             .padding()
         }

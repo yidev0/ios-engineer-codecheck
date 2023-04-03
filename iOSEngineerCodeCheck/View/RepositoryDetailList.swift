@@ -10,9 +10,24 @@ import SwiftUI
 
 struct RepositoryDetailList: View {
     
-    let symbols = ["chevron.left.forwardslash.chevron.right", "star", "tuningfork", "smallcircle.filled.circle", "eye"]
-    let titles:[LocalizedStringKey] = ["Language", "Star", "Forks", "Issues", "Watchers"]
+    let symbols = [
+        "chevron.left.forwardslash.chevron.right",
+        "star",
+        "tuningfork",
+        "smallcircle.filled.circle",
+        "eye",
+    ]
+    
+    let titles:[LocalizedStringKey] = [
+        "Language",
+        "Star",
+        "Forks",
+        "Issues",
+        "Watchers",
+    ]
+    
     var details: [String]
+    var languageColor: Color
     
     init(repository: Repository) {
         self.details = [
@@ -22,6 +37,7 @@ struct RepositoryDetailList: View {
             "\(repository.open_issues)",
             "\(repository.watchers_count)",
         ]
+        self.languageColor = Color(uiColor: LanguageColor(language: repository.language ?? "").color)
     }
     
     var body: some View {
@@ -29,7 +45,8 @@ struct RepositoryDetailList: View {
             RepositoryDetailLabel(
                 systemImage: symbols[i],
                 title: titles[i],
-                detail: "\(details[i])"
+                detail: "\(details[i])",
+                detailColor: i == 0 ? languageColor:.secondary
             )
         }
     }

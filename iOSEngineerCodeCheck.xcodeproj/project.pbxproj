@@ -16,6 +16,9 @@
 		BFD945F6244DC5EB0012785A /* iOSEngineerCodeCheckTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD945F5244DC5EB0012785A /* iOSEngineerCodeCheckTests.swift */; };
 		BFD94601244DC5EC0012785A /* iOSEngineerCodeCheckUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD94600244DC5EC0012785A /* iOSEngineerCodeCheckUITests.swift */; };
 		D10EC25D29D01A76004C8B84 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10EC25C29D01A76004C8B84 /* Repository.swift */; };
+		D10F2B7C29DAE53F0003E502 /* RepositoryLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10F2B7B29DAE53F0003E502 /* RepositoryLinkButton.swift */; };
+		D10F2B7E29DAE9490003E502 /* LanguageColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10F2B7D29DAE9490003E502 /* LanguageColor.swift */; };
+		D10F2B8029DAEB340003E502 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10F2B7F29DAEB340003E502 /* UIColor.swift */; };
 		D11FF8FA29D19CFE00726284 /* Repositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11FF8F929D19CFE00726284 /* Repositories.swift */; };
 		D11FF8FC29D19D1100726284 /* GitHubFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = D11FF8FB29D19D1100726284 /* GitHubFetcher.swift */; };
 		D17415B729D9791400932133 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D17415B929D9791400932133 /* Localizable.strings */; };
@@ -61,6 +64,9 @@
 		BFD94600244DC5EC0012785A /* iOSEngineerCodeCheckUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSEngineerCodeCheckUITests.swift; sourceTree = "<group>"; };
 		BFD94602244DC5EC0012785A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D10EC25C29D01A76004C8B84 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		D10F2B7B29DAE53F0003E502 /* RepositoryLinkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryLinkButton.swift; sourceTree = "<group>"; };
+		D10F2B7D29DAE9490003E502 /* LanguageColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageColor.swift; sourceTree = "<group>"; };
+		D10F2B7F29DAEB340003E502 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		D11FF8F929D19CFE00726284 /* Repositories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repositories.swift; sourceTree = "<group>"; };
 		D11FF8FB29D19D1100726284 /* GitHubFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubFetcher.swift; sourceTree = "<group>"; };
 		D17415B529D9791000932133 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Main.strings; sourceTree = "<group>"; };
@@ -173,6 +179,7 @@
 				D10EC25C29D01A76004C8B84 /* Repository.swift */,
 				D11FF8F929D19CFE00726284 /* Repositories.swift */,
 				D11FF8FB29D19D1100726284 /* GitHubFetcher.swift */,
+				D10F2B7D29DAE9490003E502 /* LanguageColor.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -183,6 +190,7 @@
 				D181FDF729D27BF500FE75C7 /* RepositoryOwnerLabel.swift */,
 				D181FDFE29D28FD100FE75C7 /* RepositoryDetailLabel.swift */,
 				D181FE0029D2934900FE75C7 /* RepositoryDetailList.swift */,
+				D10F2B7B29DAE53F0003E502 /* RepositoryLinkButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -193,6 +201,7 @@
 				D181FDF529D27A1000FE75C7 /* UITableViewCell.swift */,
 				D17415BB29D97A5800932133 /* String.swift */,
 				D17415BD29D97BEB00932133 /* UINavigationController.swift */,
+				D10F2B7F29DAEB340003E502 /* UIColor.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -343,14 +352,17 @@
 				BFD945E3244DC5E80012785A /* RepositoriesViewController.swift in Sources */,
 				D181FDF629D27A1000FE75C7 /* UITableViewCell.swift in Sources */,
 				D181FDFD29D2885A00FE75C7 /* DetailView.swift in Sources */,
+				D10F2B8029DAEB340003E502 /* UIColor.swift in Sources */,
 				D181FDFF29D28FD100FE75C7 /* RepositoryDetailLabel.swift in Sources */,
 				D17415BE29D97BEB00932133 /* UINavigationController.swift in Sources */,
 				D17415BC29D97A5800932133 /* String.swift in Sources */,
 				D11FF8FC29D19D1100726284 /* GitHubFetcher.swift in Sources */,
+				D10F2B7E29DAE9490003E502 /* LanguageColor.swift in Sources */,
 				D10EC25D29D01A76004C8B84 /* Repository.swift in Sources */,
 				BFD945DF244DC5E80012785A /* AppDelegate.swift in Sources */,
 				BFD945E1244DC5E80012785A /* SceneDelegate.swift in Sources */,
 				D11FF8FA29D19CFE00726284 /* Repositories.swift in Sources */,
+				D10F2B7C29DAE53F0003E502 /* RepositoryLinkButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
