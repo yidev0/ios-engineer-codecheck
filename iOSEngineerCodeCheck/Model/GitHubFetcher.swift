@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class GitHubFetcher {
     
@@ -39,6 +40,26 @@ class GitHubFetcher {
         
         urlTask?.resume()
         
+    }
+    
+    func fetchAvatar(from url:String, completion: @escaping (UIImage?, Error?) -> Void) {
+            
+        guard let url = URL(string: url) else {
+            completion(nil, nil)
+            return
+        }
+        
+        URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, result, error) in
+            if let data = data, let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    completion(image, error)
+                }
+            } else {
+                completion(nil, error)
+            }
+        }
+        .resume()
+            
     }
     
 }

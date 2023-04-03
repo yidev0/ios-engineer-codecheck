@@ -38,16 +38,6 @@ class RepositoriesViewController: UITableViewController {
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "Detail",
-           let selectedRow = selectedRow {
-            let detailView = segue.destination as! DetailViewController
-            detailView.repository = repositories[selectedRow]
-        }
-        
-    }
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return repositories.count

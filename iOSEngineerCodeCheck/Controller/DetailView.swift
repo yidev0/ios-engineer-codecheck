@@ -10,6 +10,7 @@ import SwiftUI
 
 struct DetailView: View {
     
+    var fetcher = GitHubFetcher.shared
     var repository: Repository
     @State var image: Image? = nil
     
@@ -39,7 +40,7 @@ struct DetailView: View {
     
     func getImage(for repo: Repository) {
         
-        repo.owner.fetchAvatar { image, error in
+        fetcher.fetchAvatar(from: repo.owner.avatar_url) { image, error in
             if let image: UIImage = image {
                 self.image = Image(uiImage: image)
             }

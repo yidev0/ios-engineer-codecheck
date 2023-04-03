@@ -33,6 +33,7 @@ struct Repository: Decodable {
         let login: String
         let avatar_url: String
     }
+    
 }
 
 extension Repository {
@@ -41,30 +42,4 @@ extension Repository {
         return self.owner.login + "/" + self.name
     }
     
-}
-
-extension Repository.Owner {
-    
-    func fetchAvatar(completion: @escaping (UIImage?, Error?) -> Void) {
-        
-        guard let url = URL(string: self.avatar_url) else {
-            completion(nil, nil)
-            return
-        }
-        
-        URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, result, error) in
-            if let data = data, let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    completion(image, error)
-                }
-            } else {
-                completion(nil, error)
-            }
-        }
-        .resume()
-        
-    }
-    
-    
- 
 }
