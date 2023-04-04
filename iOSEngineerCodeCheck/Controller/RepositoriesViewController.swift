@@ -23,6 +23,8 @@ class RepositoriesViewController: UIViewController {
     
     private var searchText: String = ""
     
+    private let userDefaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,9 +34,9 @@ class RepositoriesViewController: UIViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        searchBar.placeholder = "Name of Repository".localized
-        searchBar.text = searchText
-        searchBar.delegate = self
+        setupSearchBar()
+        searchRepository(for: searchText)
+        toggleLoadingIndicator(spin: false)
         
         self.tableView.backgroundView = loadingIndicator
         loadingIndicator.hidesWhenStopped = true
@@ -49,6 +51,13 @@ class RepositoriesViewController: UIViewController {
         }
     }
     
+    func setupSearchBar() {
+        searchText = userDefaults.string(forKey: "RepositorySearch") ?? ""
+        searchBar.placeholder = "Name of Repository".localized
+        searchBar.text = searchText
+        searchBar.delegate = self
+    }
+    
     func toggleLoadingIndicator(spin: Bool) {
         if spin == true {
             loadingIndicator.startAnimating()
@@ -59,6 +68,7 @@ class RepositoriesViewController: UIViewController {
     
 }
 
+// UITableViewDelegate, UITableViewDataSource
 extension RepositoriesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -102,6 +112,7 @@ extension RepositoriesViewController: UITableViewDelegate, UITableViewDataSource
     
 }
 
+// UISearchBarDelegate
 extension RepositoriesViewController: UISearchBarDelegate {
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
@@ -121,6 +132,8 @@ extension RepositoriesViewController: UISearchBarDelegate {
         searchText = searchBar.text ?? ""
         searchRepository(for: searchText)
         searchBar.endEditing(true)
+        userDefaults.set(searchText, forKey: "RepositorySearch")
+        userDefaults.synchronize()
         
     }
     
