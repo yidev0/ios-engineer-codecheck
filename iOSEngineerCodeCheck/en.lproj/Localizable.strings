@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  iOSEngineerCodeCheck
+
+  Created by Yuto on 2023/04/02.
+  Copyright © 2023 YUMEMI Inc. All rights reserved.
+*/
+
+// MARK: Repository View
+"Repositories" = "Repositories";
+"Name of Repository" = "Name of Repository";
+"Copy" = "Copy";
+
+// MARK: Detail View
+"Language" = "Language";
+"Stars" = "Stars";
+"Forks" = "Forks";
+"Issues" = "Issues";
+"Watchers" = "Watchers";
+"Username" = "Username";
+"Title" = "Title";
+"Description" = "Description";
+"Open in GitHub" = "Open in GitHub";

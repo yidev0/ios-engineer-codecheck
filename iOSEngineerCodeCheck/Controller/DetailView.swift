@@ -22,17 +22,22 @@ struct DetailView: View {
                     .foregroundColor(.primary)
                     .font(.title)
                     .fontWeight(.bold)
+                    .accessibilityValue("Title")
                 Text(repository.description ?? "")
                     .foregroundColor(.primary)
                     .font(.body)
+                    .accessibilityValue("Description")
             }
             .padding()
             
             VStack(spacing: 16) {
                 RepositoryDetailList(repository: repository)
+                RepositoryLinkButton(repository: repository)
+                    .padding(.top, 32)
             }
             .padding()
         }
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             getImage(for: repository)
         }

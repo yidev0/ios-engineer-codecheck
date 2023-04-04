@@ -17,11 +17,16 @@ class GitHubFetcher {
     
     func fetch(_ text: String, completion: @escaping ([Repository], Error?) -> Void) {
        
-        if text.count == 0 { return }
+        if text.count == 0 {
+            completion([], nil)
+            return
+        }
         
         let apiURL = "https://api.github.com/search/repositories?q=\(text)"
-        guard let encodedURL = apiURL.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed) else { return }
-        guard let url = URL(string: encodedURL) else { return }
+        guard let url = URL(string: apiURL) else {
+            completion([], nil)
+            return
+        }
         
         urlTask = URLSession.shared.dataTask(with: url) { (data, result, error) in
             if let data = data {

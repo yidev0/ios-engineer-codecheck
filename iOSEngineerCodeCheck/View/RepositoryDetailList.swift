@@ -10,25 +10,43 @@ import SwiftUI
 
 struct RepositoryDetailList: View {
     
-    let symbols = ["star", "tuningfork", "smallcircle.filled.circle", "eye"]
-    let titles = ["Star", "Forks", "Issues", "Watchers"]
-    var details: [Int]
+    let symbols = [
+        "chevron.left.forwardslash.chevron.right",
+        "star",
+        "tuningfork",
+        "smallcircle.filled.circle",
+        "eye",
+    ]
+    
+    let titles:[LocalizedStringKey] = [
+        "Language",
+        "Star",
+        "Forks",
+        "Issues",
+        "Watchers",
+    ]
+    
+    var details: [String]
+    var languageColor: Color
     
     init(repository: Repository) {
         self.details = [
-            repository.stargazers_count,
-            repository.forks_count,
-            repository.open_issues,
-            repository.watchers_count,
+            repository.language ?? "N/A",
+            "\(repository.stargazers_count)",
+            "\(repository.forks_count)",
+            "\(repository.open_issues)",
+            "\(repository.watchers_count)",
         ]
+        self.languageColor = Color(uiColor: LanguageColor(language: repository.language ?? "").color)
     }
     
     var body: some View {
-        ForEach(0..<4) { i in
+        ForEach(0..<details.count, id: \.self) { i in
             RepositoryDetailLabel(
                 systemImage: symbols[i],
                 title: titles[i],
-                detail: "\(details[i])"
+                detail: "\(details[i])",
+                detailColor: i == 0 ? languageColor:.secondary
             )
         }
     }

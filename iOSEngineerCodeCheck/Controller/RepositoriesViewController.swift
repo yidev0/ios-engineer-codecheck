@@ -9,9 +9,12 @@
 import UIKit
 import SwiftUI
 
-class RepositoriesViewController: UITableViewController {
+class RepositoriesViewController: UIViewController {
     
+    @IBOutlet weak private var tableView: UITableView!
     @IBOutlet weak private var searchBar: UISearchBar!
+    
+    private var loadingIndicator = UIActivityIndicatorView()
     
     private var repositories: [Repository] = []
     
@@ -20,16 +23,23 @@ class RepositoriesViewController: UITableViewController {
     
     private var searchText: String = ""
     
+    private let userDefaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchBar.placeholder = "GitHubのリポジトリを検索できるよー"
-        searchBar.text = searchText
-        searchBar.delegate = self
-        searchBar.accessibilityIdentifier = "Repository Search"
+        self.navigationItem.title = "Repositories".localized
+        self.navigationController?.setupLargeTitle()
         
-        self.tableView.accessibilityIdentifier = "Repository Table"
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         
+        setupSearchBar()
+        searchRepository(for: searchText)
+        toggleLoadingIndicator(spin: false)
+        
+        self.tableView.backgroundView = loadingIndicator
+        loadingIndicator.hidesWhenStopped = true
     }
     
     override func performSegue(withIdentifier identifier: String, sender: Any?) {
@@ -41,13 +51,33 @@ class RepositoriesViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func setupSearchBar() {
+        searchText = userDefaults.string(forKey: "RepositorySearch") ?? ""
+        searchBar.placeholder = "Name of Repository".localized
+        searchBar.text = searchText
+        searchBar.delegate = self
+    }
+    
+    func toggleLoadingIndicator(spin: Bool) {
+        if spin == true {
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
+    }
+    
+}
+
+// UITableViewDelegate, UITableViewDataSource
+extension RepositoriesViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return repositories.count
         
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let repo: Repository = repositories[indexPath.row]
         let cell = UITableViewCell()
@@ -56,7 +86,23 @@ class RepositoriesViewController: UITableViewController {
         
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        let repository = repositories[indexPath.row]
+        let copyURLAction = UIAction(title: "Copy".localized, image: UIImage(systemName: "link")) { _ in
+            let pasteboard = UIPasteboard.general
+            pasteboard.url = repository.url
+        }
+        
+        let menu = UIMenu(children: [copyURLAction])
+        let configuration = UIContextMenuConfiguration(actionProvider:  { _ in
+            menu
+        })
+        return configuration
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         selectedRow = indexPath.row
         // 画面遷移時に呼ばれる
@@ -66,6 +112,7 @@ class RepositoriesViewController: UITableViewController {
     
 }
 
+// UISearchBarDelegate
 extension RepositoriesViewController: UISearchBarDelegate {
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
@@ -85,19 +132,18 @@ extension RepositoriesViewController: UISearchBarDelegate {
         searchText = searchBar.text ?? ""
         searchRepository(for: searchText)
         searchBar.endEditing(true)
+        userDefaults.set(searchText, forKey: "RepositorySearch")
+        userDefaults.synchronize()
         
     }
     
     func searchRepository(for text: String) {
-        
+        self.toggleLoadingIndicator(spin: true)
         gitHubFetcher.fetch(text) { repos, error in
-            if let error = error {
-                print(error.localizedDescription)
-            } else {
-                self.repositories = repos
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+            self.repositories = repos
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.toggleLoadingIndicator(spin: false)
             }
         }
         

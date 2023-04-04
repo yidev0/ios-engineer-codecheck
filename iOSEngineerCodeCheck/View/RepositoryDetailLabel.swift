@@ -11,13 +11,20 @@ import SwiftUI
 struct RepositoryDetailLabel: View {
     
     var image: Image
-    var title: String
+    var title: LocalizedStringKey
     var detail: String
+    var detailColor: Color
     
-    init(systemImage: String, title: String, detail: String) {
+    init(
+        systemImage: String,
+        title: LocalizedStringKey,
+        detail: String,
+        detailColor: Color
+    ) {
         self.image = Image(systemName: systemImage)
         self.title = title
         self.detail = detail
+        self.detailColor = detailColor
     }
     
     var body: some View {
@@ -26,21 +33,30 @@ struct RepositoryDetailLabel: View {
                 image
             }
             .frame(minWidth: UIFont.preferredFont(forTextStyle: .body).pointSize + 16)
+            .accessibilityHidden(true)
+            
             Text(title)
                 .foregroundColor(.primary)
             Spacer()
             Text(detail)
-                .foregroundColor(.secondary)
+                .foregroundColor(detailColor)
         }
+        .accessibilityElement(children: .combine)
     }
 }
 
 extension RepositoryDetailLabel {
     
-    init(imageName: String, title: String, detail: String) {
+    init(
+        imageName: String,
+        title: LocalizedStringKey,
+        detail: String,
+        detailColor: Color
+    ) {
         self.image = Image(imageName)
         self.title = title
         self.detail = detail
+        self.detailColor = detailColor
     }
     
 }
@@ -50,7 +66,8 @@ struct RepositoryDetailLabel_Previews: PreviewProvider {
         RepositoryDetailLabel(
             systemImage: "star",
             title: "Title",
-            detail: "10"
+            detail: "10",
+            detailColor: .red
         )
     }
 }
