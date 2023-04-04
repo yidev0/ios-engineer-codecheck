@@ -9,9 +9,12 @@
 import UIKit
 import SwiftUI
 
-class RepositoriesViewController: UITableViewController {
+class RepositoriesViewController: UIViewController {
     
+    @IBOutlet weak private var tableView: UITableView!
     @IBOutlet weak private var searchBar: UISearchBar!
+    
+    private var loadingIndicator = UIActivityIndicatorView()
     
     private var repositories: [Repository] = []
     
@@ -26,10 +29,15 @@ class RepositoriesViewController: UITableViewController {
         self.navigationItem.title = "Repositories".localized
         self.navigationController?.setupLargeTitle()
         
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        
         searchBar.placeholder = "Name of Repository".localized
         searchBar.text = searchText
         searchBar.delegate = self
         
+        self.tableView.backgroundView = loadingIndicator
+        loadingIndicator.hidesWhenStopped = true
     }
     
     override func performSegue(withIdentifier identifier: String, sender: Any?) {
@@ -41,13 +49,25 @@ class RepositoriesViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func toggleLoadingIndicator(spin: Bool) {
+        if spin == true {
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
+    }
+    
+}
+
+extension RepositoriesViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return repositories.count
         
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let repo: Repository = repositories[indexPath.row]
         let cell = UITableViewCell()
@@ -56,7 +76,7 @@ class RepositoriesViewController: UITableViewController {
         
     }
     
-    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         
         let repository = repositories[indexPath.row]
         let copyURLAction = UIAction(title: "Copy".localized, image: UIImage(systemName: "link")) { _ in
@@ -72,7 +92,7 @@ class RepositoriesViewController: UITableViewController {
         
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         selectedRow = indexPath.row
         // 画面遷移時に呼ばれる
@@ -105,11 +125,12 @@ extension RepositoriesViewController: UISearchBarDelegate {
     }
     
     func searchRepository(for text: String) {
-        
+        self.toggleLoadingIndicator(spin: true)
         gitHubFetcher.fetch(text) { repos, error in
             self.repositories = repos
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                self.toggleLoadingIndicator(spin: false)
             }
         }
         
